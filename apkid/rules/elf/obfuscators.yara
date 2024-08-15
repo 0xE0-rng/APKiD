@@ -467,6 +467,33 @@ rule firehash : obfuscator
     elf.machine == elf.EM_ARM and all of them
 }
 
+rule zshieldobfuscator : obfuscator
+{
+  meta:
+    description = "Zimperium zShield"
+    url         = "https://www.zimperium.com/zshield/"
+    author      = "0xE0_rng (https://github.com/0xE0-rng)"
+    sample      = ""
+
+  strings:
+    $s_01 = "Android (10552028, +pgo, +bolt, +lto, -mlgo, based on r487747d) clang version 17.0.2 (https://android.googlesource.com/toolchain/llvm-project d9f89f4d16663d5012e5c09495f3b30ece3d2362)"
+    $s_02 = "Linker: LLD 17.0.2"
+
+    $js_01 = "_ZN7_JNIEnv13CallIntMethodEP8_jobjectP10_jmethodIDz"
+    $js_02 = "_ZN7_JNIEnv14CallLongMethodEP8_jobjectP10_jmethodIDz"
+    $js_03 = "_ZN7_JNIEnv14CallVoidMethodEP8_jobjectP10_jmethodIDz"
+    $js_04 = "_ZN7_JNIEnv16CallObjectMethodEP8_jobjectP10_jmethodIDz"
+    $js_05 = "_ZN7_JNIEnv17CallBooleanMethodEP8_jobjectP10_jmethodIDz"
+    $js_06 = "_ZN7_JNIEnv20CallStaticVoidMethodEP7_jclassP10_jmethodIDz"
+    $js_07 = "_ZN7_JNIEnv22CallStaticObjectMethodEP7_jclassP10_jmethodIDz"
+    $js_08 = "_ZN7_JNIEnv9NewObjectEP7_jclassP10_jmethodIDz"
+
+  condition:
+    all of ($s_*) or
+    all of ($js_*) and
+    is_elf
+}
+
 rule advobfuscator : obfuscator
 {
   meta:
